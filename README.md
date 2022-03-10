@@ -17,17 +17,19 @@ Leveraging the magic of Github Actions the workflows can:
 
 1. Edit VER and COMMIT in `pkginfo`.
 2. Trigger the `create_dpkg.yml` workflow, and select the targets you want to
-   build for. When the workflow is complete, check that it has produced a dpkg
-   artifact with the expected .deb files.
-3. Trigger `update_repo_rpi.yml`. This will update the repository data, which is
-   located in `repo/rpi/out` and `repo/rpi/db`. This will also sign the packages
-   using the `RPI_REPO_SECKEY` GitHub secret.
+   build for. When the workflow is complete, check that it has produced
+   artifacts with the expected .deb files.
+3. Trigger `update_repo_rpi.yml`. This will load repository data from the latest
+   release (revision), update with packages from the latest `create_dpkg.yml`,
+   and create a new Github release of the repository with assets for publishing.
+   The packages will have been signed using the `RPI_REPO_SECKEY` GitHub secret.
 
 ## Howto add a distribution or architechture
 
-1. Add new distro/arch to `create_dpkg.yml`.
-2. Edit `repo/rpi/conf/distributions` and `repo/rpi/conf/incoming`.
-3. Commit and push changes.
+1. Add new distro/arch to `create_dpkg.yml`
+2. Add new distro/arch to `update_repo_rpi.yml`
+3. Edit `repo/rpi/conf/distributions` and `repo/rpi/conf/incoming`.
+4. Commit and push changes.
 
 ## Credit
 
