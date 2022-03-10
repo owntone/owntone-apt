@@ -1,0 +1,72 @@
+#!/bin/bash
+set -e
+
+if [ "$OS" == "debian" ]; then
+    MIRRORSITE="http://ftp.debian.org/debian/"
+    COMPONENTS="main contrib non-free"
+    DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
+    PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+    : ${DIST:="bullseye"}
+    : ${ARCH:="amd64"}
+elif [ "$OS" == "raspbian" ]; then
+    MIRRORSITE="https://archive.raspbian.org/raspbian/"
+    COMPONENTS="main contrib non-free rpi"
+    OTHERMIRROR="deb http://archive.raspberrypi.org/debian/ $DIST main"
+    APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
+    DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
+    PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+    : ${DIST:="buster"}
+    : ${ARCH:="armhf"}
+elif [ "$OS" == "raspberrypi" ]; then
+    MIRRORSITE="http://ftp.debian.org/debian/"
+    COMPONENTS="main contrib non-free"
+    OTHERMIRROR="deb http://archive.raspberrypi.org/debian/ $DIST main"
+    APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
+    DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
+    PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+    : ${DIST:="bullseye"}
+    : ${ARCH:="armhf"}
+else
+    echo "Unknown OS: $OS"
+    exit 1
+fi
+
+if [ "$DIST" == "" ]; then
+    echo "DIST is not set"
+    exit 1
+fi
+
+if [ "$ARCH" == "" ]; then
+    echo "ARCH is not set"
+    exit 1
+fi
+
+NAME="$OS-$DIST-$ARCH"
+
+if [ "$ARCH" == "armel" ] && [ "$(dpkg --print-architecture)" != "armel" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+if [ "$ARCH" == "armhf" ] && [ "$(dpkg --print-architecture)" != "armhf" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+if [ "$ARCH" == "arm64" ] && [ "$(dpkg --print-architecture)" != "arm64" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+
+# Install these selected Owntone dependencies a priori to speed up package build
+# (for some reason passing these via --extrapackages doesn't work)
+EXTRAPACKAGES="debhelper autoconf libtool gettext gawk bison flex gperf \
+  libavcodec-dev libavformat-dev libavutil-dev libavfilter-dev \
+  libavahi-client-dev libsqlite3-dev libconfuse-dev libmxml-dev \
+  libasound2-dev libpulse-dev zlib1g-dev libunistring-dev libevent-dev"
+
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
+BASEDIR="/var/cache"
+BASETGZ="$BASEDIR/pbuilder/$NAME-base.tgz"
+DISTRIBUTION="$DIST"
+BUILDRESULT="$BASEDIR/pbuilder/result/$NAME"
+APTCACHE="$BASEDIR/pbuilder/aptcache/$NAME"
+BUILDPLACE="$BASEDIR/pbuilder/build"
+HOOKDIR="$BASEDIR/pbuilder/hook.d/"
+
+mkdir -p $APTCACHE

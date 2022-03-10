@@ -1,0 +1,6 @@
+PKGNAME=owntone
+OWNER=owntone
+REPOSITORY=owntone-server
+VER=28.3.119.git75f6f75
+DEB=1
+COMMIT=75f6f75da38b5f7e97dfafef185d73da0ab7b91a

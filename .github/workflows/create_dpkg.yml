@@ -1,0 +1,136 @@
+name: Create Debian packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      raspbian-buster-armhf:
+        type: boolean
+      raspbian-bullseye-armhf:
+        type: boolean
+      raspberrypi-bullseye-arm64:
+        type: boolean
+      debian-bullseye-amd64:
+        type: boolean
+
+# Use FLAGS to only build sources for one of the packages. The below could also
+# be imported from files, but that would add a checkout step, plus makes it more
+# important to support multiline json as per:
+# https://github.community/t/set-output-truncates-multiline-strings/16852
+env:
+  raspbian-buster-armhf: '{"image":"raspbian-buster-armhf","OS":"raspbian","DIST":"buster","ARCH":"armhf","FLAGS":""}'
+  raspbian-bullseye-armhf: '{"image":"raspbian-bullseye-armhf","OS":"raspbian","DIST":"bullseye","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
+  raspberrypi-bullseye-arm64: '{"image":"raspberrypi-bullseye-arm64","OS":"raspberrypi","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
+  debian-bullseye-amd64: '{"image":"debian-bullseye-amd64","OS":"debian","DIST":"bullseye","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    env:
+      PKGCONF: pkgconf
+
+    steps:
+      - name: Add raspbian-buster-armhf
+        if: ${{ github.event.inputs.raspbian-buster-armhf == 'true' }}
+        run: |
+          echo -n '${{ env.raspbian-buster-armhf }},' >> $PKGCONF
+
+      - name: Add raspbian-bullseye-armhf
+        if: ${{ github.event.inputs.raspbian-bullseye-armhf == 'true' }}
+        run: echo -n '${{ env.raspbian-bullseye-armhf }},' >> $PKGCONF
+
+      - name: Add raspberrypi-bullseye-arm64
+        if: ${{ github.event.inputs.raspberrypi-bullseye-arm64 == 'true' }}
+        run: echo -n '${{ env.raspberrypi-bullseye-arm64 }},' >> $PKGCONF
+
+      - name: Add debian-bullseye-amd64
+        if: ${{ github.event.inputs.debian-bullseye-amd64 == 'true' }}
+        run: echo -n '${{ env.debian-bullseye-amd64 }},' >> $PKGCONF
+
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          test -f $PKGCONF || { echo "No packages selected"; exit 1; }
+          echo -e "`cat $PKGCONF`\n"
+          echo ::set-output name=matrix::{\"include\":[`cat $PKGCONF`]}
+
+  build:
+    # Can be changed to latest when latest is 22.04 (comes with a fixed qemu),
+    # and the manual install of qemu can be dropped
+    runs-on: ubuntu-20.04
+    needs: prepare
+    strategy:
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Load package info into environment
+        run: |
+          cat ./pkginfo >> $GITHUB_ENV
+
+      - name: Prepare directories
+        run: |
+          mkdir dl
+          mkdir build_dir
+          mkdir cache
+
+      # dh-make and devscripts are only used for the package build
+      - name: Install pbuilder, Debian tools, keyrings
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring devscripts dh-make
+          wget -O dl/raspbian-archive-keyring.deb http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
+          sudo dpkg -i dl/raspbian-archive-keyring.deb
+          wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2016.10.31_all.deb
+          sudo dpkg -i dl/raspberrypi-archive-keyring.deb
+
+      # See https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1895456
+      - name: Add Ubuntu 21.04 repo for fixed QEMU 5+
+        uses: myci-actions/add-deb-repo@10
+        with:
+          repo: deb http://mirrors.kernel.org/ubuntu/ hirsute universe
+          repo-name: hirsute
+          install: qemu-user-static
+
+      - name: Cache pbuilder image
+        id: cache-image
+        uses: actions/cache@v2
+        with:
+          path: cache/${{ matrix.image }}-base.tgz
+          key: ${{ matrix.image }}
+
+      - name: Restore image from cache
+        if: steps.cache-image.outputs.cache-hit == 'true'
+        run: |
+          sudo cp cache/${{ matrix.image }}-base.tgz /var/cache/pbuilder/
+      - name: Or create pbuilder image
+        if: steps.cache-image.outputs.cache-hit != 'true'
+        run: |
+          sudo OS=${{ matrix.OS }} DIST=${{ matrix.DIST }} ARCH=${{ matrix.ARCH }} pbuilder create --configfile pbuilderrc
+          cp /var/cache/pbuilder/${{ matrix.image }}-base.tgz cache/
+
+      - name: Download and unpack OwnTone
+        run: |
+          wget -O build_dir/${{ env.PKGNAME }}_${{ env.VER }}.orig.tar.gz https://github.com/${{ env.OWNER }}/${{ env.REPOSITORY }}/archive/${{ env.COMMIT }}.tar.gz
+          tar xzf build_dir/${{ env.PKGNAME }}_${{ env.VER }}.orig.tar.gz --directory build_dir
+          mv build_dir/${{ env.REPOSITORY }}-$COMMIT build_dir/${{ env.PKGNAME }}-${{ env.VER }}
+          cp -a ${{ env.REPOSITORY }}/debian build_dir/${{ env.PKGNAME }}-${{ env.VER }}
+
+      # The below uses a method of creating changelog and setting versions that
+      # isn't very kosher. I don't know how to use the proper method while still
+      # creating different packages for different distributions that can be
+      # served from one repo.
+      - name: Build OwnTone package
+        working-directory: build_dir/${{ env.PKGNAME }}-${{ env.VER }}
+        run: |
+          dch --create --package ${{ env.PKGNAME }} --newversion ${{ env.VER }}-${{ env.DEB }}+${{ matrix.DIST }} --distribution ${{ matrix.DIST }} --force-distribution "Dummy changelog @commit ${{ env.COMMIT }}"
+          sudo OS=${{ matrix.OS }} DIST=${{ matrix.DIST }} ARCH=${{ matrix.ARCH }} DEB_BUILD_OPTIONS="parallel=$(nproc) nocheck" pdebuild --configfile ../../pbuilderrc ${{ matrix.FLAGS }}
+          rm debian/changelog
+
+      - name: Upload dpkg
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.image }}
+          path: /var/cache/pbuilder/result/${{ matrix.image }}

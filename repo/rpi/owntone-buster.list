@@ -1,0 +1,4 @@
+# OwnTone APT archive for Raspberry Pi OS
+# See https://www.raspberrypi.org/forums/viewtopic.php?t=49928
+deb [signed-by=/usr/share/keyrings/owntone-archive-keyring.gpg] http://www.gyfgafguf.dk/raspbian/owntone/ buster contrib
+#deb-src [signed-by=/usr/share/keyrings/owntone-archive-keyring.gpg] http://www.gyfgafguf.dk/raspbian/owntone/ buster contrib

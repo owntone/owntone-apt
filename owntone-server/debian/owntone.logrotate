@@ -1,0 +1,14 @@
+/var/log/owntone.log {
+	weekly
+	missingok
+	notifempty
+	rotate 3
+	create
+	compress
+	delaycompress
+	noolddir
+	postrotate
+		killall -q -HUP owntone
+	endscript
+}
+

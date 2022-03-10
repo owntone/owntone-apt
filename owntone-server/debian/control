@@ -1,0 +1,49 @@
+Source: owntone
+Section: sound
+Priority: optional
+Maintainer: Espen Jürgensen <espenjurgensen+raspbian@gmail.com>
+Build-Depends: debhelper,
+ autoconf,
+ libtool,
+ gettext,
+ gawk,
+ bison,
+ flex,
+ gperf,
+ libavcodec-dev,
+ libavformat-dev,
+ libavutil-dev,
+ libavfilter-dev,
+ libavahi-client-dev,
+ libsqlite3-dev,
+ libconfuse-dev,
+ libmxml-dev,
+ libplist-dev,
+ libgcrypt11-dev | libgcrypt20-dev,
+ libgpg-error-dev,
+ libasound2-dev,
+ libpulse-dev,
+ zlib1g-dev,
+ libunistring-dev,
+ libevent-dev,
+ libcurl4-openssl-dev | libcurl4-gnutls-dev,
+ libjson-c-dev | libjson0-dev,
+ libprotobuf-c0-dev | libprotobuf-c-dev,
+ libgnutls-dev | libgnutls28-dev,
+ libsodium-dev,
+ libwebsockets-dev
+Homepage: http://owntone.github.io/owntone-server/
+Standards-Version: 3.9.8
+
+Package: owntone
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, avahi-daemon
+Suggests: sqlite3, libavcodec-extra
+Description: Serves your local music library and Spotify library to AirPlay,
+ Chromecast and Roku speakers, as well iTunes (DAAP) and MPD compatible clients.
+ You can control OwnTone with Apple Remote (and DACP compatibles), with an MPD
+ client or with the built-in web interface at http://localhost:3689/.
+ .
+ This package is specifically made for Raspberry Pi OS. OwnTone was previously
+ called forked-daapd.
+
