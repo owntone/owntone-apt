@@ -62,7 +62,7 @@ jobs:
 
       - name: Pack and prepare release
         run: |
-          tar czf dist/$RELFILE --directory repo/rpi/var/ db public
+          tar czf dist/$RELFILE --directory repo/rpi/var/ db publish
           ls -lR dist
 
       - name: Create release notes
