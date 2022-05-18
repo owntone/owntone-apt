@@ -90,7 +90,7 @@ jobs:
       - name: Add Ubuntu 21.04 repo for fixed QEMU 5+
         uses: myci-actions/add-deb-repo@10
         with:
-          repo: deb http://mirrors.kernel.org/ubuntu/ hirsute universe
+          repo: deb http://azure.archive.ubuntu.com/ubuntu/ hirsute universe
           repo-name: hirsute
           install: qemu-user-static
 
