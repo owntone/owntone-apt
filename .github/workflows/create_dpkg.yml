@@ -87,11 +87,12 @@ jobs:
           sudo dpkg -i dl/raspberrypi-archive-keyring.deb
 
       # See https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1895456
-      - name: Add Ubuntu 21.04 repo for fixed QEMU 5+
+      # ---! ONLY REQUIRED UNTIL ubuntu-latest BECOMES 22.04 !---
+      - name: Add Ubuntu 22.04 repo for fixed QEMU 5+
         uses: myci-actions/add-deb-repo@10
         with:
-          repo: deb http://azure.archive.ubuntu.com/ubuntu/ hirsute universe
-          repo-name: hirsute
+          repo: deb http://azure.archive.ubuntu.com/ubuntu/ jammy universe
+          repo-name: jammy
           install: qemu-user-static
 
       - name: Cache pbuilder image
