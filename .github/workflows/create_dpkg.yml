@@ -64,7 +64,7 @@ jobs:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Load package info into environment
         run: |
@@ -97,7 +97,7 @@ jobs:
 
       - name: Cache pbuilder image
         id: cache-image
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: cache/${{ matrix.image }}-base.tgz
           key: ${{ matrix.image }}
@@ -131,7 +131,7 @@ jobs:
           rm debian/changelog
 
       - name: Upload dpkg
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.image }}
           path: /var/cache/pbuilder/result/${{ matrix.image }}
