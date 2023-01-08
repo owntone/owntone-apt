@@ -53,12 +53,10 @@ jobs:
         run: |
           test -f $PKGCONF || { echo "No packages selected"; exit 1; }
           echo -e "`cat $PKGCONF`\n"
-          echo ::set-output name=matrix::{\"include\":[`cat $PKGCONF`]}
+          echo "matrix={\"include\":[`cat $PKGCONF`]}" >> $GITHUB_OUTPUT
 
   build:
-    # Can be changed to latest when latest is 22.04 (comes with a fixed qemu),
-    # and the manual install of qemu can be dropped
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: prepare
     strategy:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
@@ -85,15 +83,6 @@ jobs:
           sudo dpkg -i dl/raspbian-archive-keyring.deb
           wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2016.10.31_all.deb
           sudo dpkg -i dl/raspberrypi-archive-keyring.deb
-
-      # See https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1895456
-      # ---! ONLY REQUIRED UNTIL ubuntu-latest BECOMES 22.04 !---
-      - name: Add Ubuntu 22.04 repo for fixed QEMU 5+
-        uses: myci-actions/add-deb-repo@10
-        with:
-          repo: deb http://azure.archive.ubuntu.com/ubuntu/ jammy universe
-          repo-name: jammy
-          install: qemu-user-static
 
       - name: Cache pbuilder image
         id: cache-image
