@@ -11,6 +11,10 @@ on:
         type: boolean
       debian-bullseye-amd64:
         type: boolean
+  schedule:
+    # Rebuild once a month. Could be 0 0 1, but Github servers are probably
+    # quite busy at that time.
+    - cron: '7 7 24 * *'
 
 # Use FLAGS to only build sources for one of the packages. The below could also
 # be imported from files, but that would add a checkout step, plus makes it more
@@ -29,23 +33,26 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     env:
       PKGCONF: pkgconf
+      BUILD_raspbian-buster-armhf: ${{ github.event.inputs.raspbian-buster-armhf || 'true' }}
+      BUILD_raspbian-bullseye-armhf: ${{ github.event.inputs.raspbian-bullseye-armhf || 'true' }}
+      BUILD_raspberrypi-bullseye-arm64: ${{ github.event.inputs.raspberrypi-bullseye-arm64 || 'true' }}
+      BUILD_debian-bullseye-amd64: ${{ github.event.inputs.debian-bullseye-amd64 || 'true' }}
 
     steps:
       - name: Add raspbian-buster-armhf
-        if: ${{ github.event.inputs.raspbian-buster-armhf == 'true' }}
-        run: |
-          echo -n '${{ env.raspbian-buster-armhf }},' >> $PKGCONF
+        if: ${{ env.BUILD_raspbian-buster-armhf == 'true' }}
+        run: echo -n '${{ env.raspbian-buster-armhf }},' >> $PKGCONF
 
       - name: Add raspbian-bullseye-armhf
-        if: ${{ github.event.inputs.raspbian-bullseye-armhf == 'true' }}
+        if: ${{ env.BUILD_raspbian-bullseye-armhf == 'true' }}
         run: echo -n '${{ env.raspbian-bullseye-armhf }},' >> $PKGCONF
 
       - name: Add raspberrypi-bullseye-arm64
-        if: ${{ github.event.inputs.raspberrypi-bullseye-arm64 == 'true' }}
+        if: ${{ env.BUILD_raspberrypi-bullseye-arm64 == 'true' }}
         run: echo -n '${{ env.raspberrypi-bullseye-arm64 }},' >> $PKGCONF
 
       - name: Add debian-bullseye-amd64
-        if: ${{ github.event.inputs.debian-bullseye-amd64 == 'true' }}
+        if: ${{ env.BUILD_debian-bullseye-amd64 == 'true' }}
         run: echo -n '${{ env.debian-bullseye-amd64 }},' >> $PKGCONF
 
       - name: Set matrix
