@@ -1,6 +1,6 @@
 PKGNAME=owntone
 OWNER=owntone
 REPOSITORY=owntone-server
-VER=28.6.125.gitf9c50b8
+VER=28.6.126.git2ad680a
 DEB=1
-COMMIT=f9c50b80fc5a18e1c39dd7639be9ee178110f2b3
+COMMIT=2ad680a96b10ee7acb060d2f3db3346c9506fd8d
