@@ -20,8 +20,7 @@ elif [ "$OS" == "raspbian" ]; then
 elif [ "$OS" == "raspberrypi" ]; then
     MIRRORSITE="http://ftp.debian.org/debian/"
     COMPONENTS="main contrib non-free"
-    OTHERMIRROR="deb http://ftp.debian.org/debian/ $DIST-updates main"
-    OTHERMIRROR="deb http://archive.raspberrypi.org/debian/ $DIST main"
+    OTHERMIRROR="deb http://security.debian.org/debian-security $DIST-security main contrib non-free|deb http://archive.raspberrypi.org/debian/ $DIST main"
     APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
     DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
     PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
