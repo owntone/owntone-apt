@@ -11,3 +11,10 @@ Architectures: armhf arm64 source
 Components: contrib
 Description: OwnTone repo for Raspberry Pi OS
 SignWith: E0AD26FB82525DC958B0A1D4F62793319870F4F5
+
+Origin: www.gyfgafguf.dk/raspbian
+Codename: bookworm
+Architectures: armhf arm64 source
+Components: contrib
+Description: OwnTone repo for Raspberry Pi OS
+SignWith: E0AD26FB82525DC958B0A1D4F62793319870F4F5

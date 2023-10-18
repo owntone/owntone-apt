@@ -1,5 +1,5 @@
 Name: default
 IncomingDir: var/incoming/
 TempDir: /tmp
-Allow: buster bullseye
+Allow: buster bullseye bookworm
 Cleanup: unused_buildinfo_files
