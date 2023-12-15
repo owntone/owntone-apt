@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       raspbian-buster-armhf:
-        type: boolean
+        type: false
       raspbian-bullseye-armhf:
-        type: boolean
+        type: false
       raspbian-bookworm-armhf:
-        type: boolean
+        type: false
       raspberrypi-bullseye-arm64:
-        type: boolean
+        type: false
       raspberrypi-bookworm-arm64:
-        type: boolean
+        type: false
       debian-bullseye-amd64:
-        type: boolean
+        type: true
       debian-bookworm-amd64:
-        type: boolean
+        type: true
   schedule:
     # Rebuild once a month. Could be 0 0 1, but Github servers are probably
     # quite busy at that time.
