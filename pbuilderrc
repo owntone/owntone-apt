@@ -57,7 +57,7 @@ fi
 # (for some reason passing these via --extrapackages doesn't work)
 EXTRAPACKAGES="debhelper autoconf libtool gettext gawk bison flex gperf \
   libavcodec-dev libavformat-dev libavutil-dev libavfilter-dev \
-  libavahi-client-dev libsqlite3-dev libconfuse-dev libmxml-dev \
+  libavahi-client-dev libsqlite3-dev libconfuse-dev libxml2-dev \
   libasound2-dev libpulse-dev zlib1g-dev libunistring-dev libevent-dev"
 
 DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--arch=$ARCH")
