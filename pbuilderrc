@@ -43,16 +43,6 @@ fi
 
 NAME="$OS-$DIST-$ARCH"
 
-if [ "$ARCH" == "armel" ] && [ "$(dpkg --print-architecture)" != "armel" ]; then
-    DEBOOTSTRAP="qemu-debootstrap"
-fi
-if [ "$ARCH" == "armhf" ] && [ "$(dpkg --print-architecture)" != "armhf" ]; then
-    DEBOOTSTRAP="qemu-debootstrap"
-fi
-if [ "$ARCH" == "arm64" ] && [ "$(dpkg --print-architecture)" != "arm64" ]; then
-    DEBOOTSTRAP="qemu-debootstrap"
-fi
-
 # Install these selected Owntone dependencies a priori to speed up package build
 # (for some reason passing these via --extrapackages doesn't work)
 EXTRAPACKAGES="debhelper autoconf libtool gettext gawk bison flex gperf \
