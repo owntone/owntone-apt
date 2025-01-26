@@ -17,6 +17,8 @@ on:
         type: boolean
       debian-bookworm-amd64:
         type: boolean
+      debian-trixie-amd64:
+        type: boolean
   schedule:
     # Rebuild once a month. Could be 0 0 1, but Github servers are probably
     # quite busy at that time.
@@ -34,6 +36,7 @@ env:
   raspberrypi-bookworm-arm64: '{"image":"raspberrypi-bookworm-arm64","OS":"raspberrypi","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   debian-bullseye-amd64: '{"image":"debian-bullseye-amd64","OS":"debian","DIST":"bullseye","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-bookworm-amd64: '{"image":"debian-bookworm-amd64","OS":"debian","DIST":"bookworm","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
+  debian-trixie-amd64: '{"image":"debian-trixie-amd64","OS":"debian","DIST":"trixie","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
 
 jobs:
   prepare:
@@ -49,6 +52,7 @@ jobs:
       BUILD_raspberrypi-bookworm-arm64: ${{ github.event.inputs.raspberrypi-bookworm-arm64 || 'true' }}
       BUILD_debian-bullseye-amd64: ${{ github.event.inputs.debian-bullseye-amd64 || 'true' }}
       BUILD_debian-bookworm-amd64: ${{ github.event.inputs.debian-bookworm-amd64 || 'true' }}
+      BUILD_debian-trixie-amd64: ${{ github.event.inputs.debian-trixie-amd64 || 'true' }}
 
     steps:
       - name: Add raspbian-buster-armhf
@@ -78,6 +82,10 @@ jobs:
       - name: Add debian-bookworm-amd64
         if: ${{ env.BUILD_debian-bookworm-amd64 == 'true' }}
         run: echo -n '${{ env.debian-bookworm-amd64 }},' >> $PKGCONF
+
+      - name: Add debian-trixie-amd64
+        if: ${{ env.BUILD_debian-trixie-amd64 == 'true' }}
+        run: echo -n '${{ env.debian-trixie-amd64 }},' >> $PKGCONF
 
       - name: Set matrix
         id: set-matrix
