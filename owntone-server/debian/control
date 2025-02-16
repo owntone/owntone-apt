@@ -31,7 +31,9 @@ Build-Depends: debhelper,
  libprotobuf-c0-dev | libprotobuf-c-dev,
  libgnutls-dev | libgnutls28-dev,
  libsodium-dev,
- libwebsockets-dev
+ libwebsockets-dev,
+ node,
+ npm
 Homepage: http://owntone.github.io/owntone-server/
 Standards-Version: 3.9.8
 
