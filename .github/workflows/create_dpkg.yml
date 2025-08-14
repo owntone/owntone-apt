@@ -9,6 +9,8 @@ on:
         type: boolean
       raspbian-bookworm-armhf:
         type: boolean
+      raspbian-trixie-armhf:
+        type: boolean
       raspberrypi-bullseye-arm64:
         type: boolean
       raspberrypi-bookworm-arm64:
@@ -34,6 +36,7 @@ env:
   raspbian-buster-armhf: '{"image":"raspbian-buster-armhf","OS":"raspbian","DIST":"buster","ARCH":"armhf","FLAGS":""}'
   raspbian-bullseye-armhf: '{"image":"raspbian-bullseye-armhf","OS":"raspbian","DIST":"bullseye","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
   raspbian-bookworm-armhf: '{"image":"raspbian-bookworm-armhf","OS":"raspbian","DIST":"bookworm","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
+  raspbian-trixie-armhf: '{"image":"raspbian-trixie-armhf","OS":"raspbian","DIST":"trixie","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
   raspberrypi-bullseye-arm64: '{"image":"raspberrypi-bullseye-arm64","OS":"raspberrypi","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-bookworm-arm64: '{"image":"raspberrypi-bookworm-arm64","OS":"raspberrypi","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-trixie-arm64: '{"image":"raspberrypi-trixie-arm64","OS":"raspberrypi","DIST":"trixie","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
@@ -51,6 +54,7 @@ jobs:
       BUILD_raspbian-buster-armhf: ${{ github.event.inputs.raspbian-buster-armhf || 'true' }}
       BUILD_raspbian-bullseye-armhf: ${{ github.event.inputs.raspbian-bullseye-armhf || 'true' }}
       BUILD_raspbian-bookworm-armhf: ${{ github.event.inputs.raspbian-bookworm-armhf || 'true' }}
+      BUILD_raspbian-trixie-armhf: ${{ github.event.inputs.raspbian-trixie-armhf || 'true' }}
       BUILD_raspberrypi-bullseye-arm64: ${{ github.event.inputs.raspberrypi-bullseye-arm64 || 'true' }}
       BUILD_raspberrypi-bookworm-arm64: ${{ github.event.inputs.raspberrypi-bookworm-arm64 || 'true' }}
       BUILD_raspberrypi-trixie-arm64: ${{ github.event.inputs.raspberrypi-trixie-arm64 || 'true' }}
@@ -70,6 +74,10 @@ jobs:
       - name: Add raspbian-bookworm-armhf
         if: ${{ env.BUILD_raspbian-bookworm-armhf == 'true' }}
         run: echo -n '${{ env.raspbian-bookworm-armhf }},' >> $PKGCONF
+
+      - name: Add raspbian-trixie-armhf
+        if: ${{ env.BUILD_raspbian-trixie-armhf == 'true' }}
+        run: echo -n '${{ env.raspbian-trixie-armhf }},' >> $PKGCONF
 
       - name: Add raspberrypi-bullseye-arm64
         if: ${{ env.BUILD_raspberrypi-bullseye-arm64 == 'true' }}
