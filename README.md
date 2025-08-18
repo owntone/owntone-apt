@@ -35,6 +35,6 @@ Leveraging the magic of Github Actions the workflows can:
 
 This was made with the help of these great guides/resources:
 
-- https://grid.in.th/2020/10/cross-compile-packages-for-raspbian-from-x86_64/
+- https://grid.in.th/2020/10/cross-compile-raspbian-x64
 - https://jod.al/2015/03/08/building-arm-debs-with-pbuilder/
 - https://github.com/mopidy/apt
