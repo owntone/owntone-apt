@@ -9,7 +9,7 @@ if [ "$OS" == "debian" ]; then
     : ${DIST:="bullseye"}
     : ${ARCH:="amd64"}
 elif [ "$OS" == "raspbian" ]; then
-    MIRRORSITE="https://archive.raspbian.org/raspbian/"
+    MIRRORSITE="http://archive.raspbian.org/raspbian/"
     COMPONENTS="main contrib non-free rpi"
     OTHERMIRROR="deb http://archive.raspberrypi.org/debian/ $DIST main"
     APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
