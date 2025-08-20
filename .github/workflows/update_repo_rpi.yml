@@ -58,8 +58,10 @@ jobs:
           test ! -d $DPKGDIR/raspbian-buster-armhf || mv $DPKGDIR/raspbian-buster-armhf/* var/incoming/
           test ! -d $DPKGDIR/raspbian-bullseye-armhf || mv $DPKGDIR/raspbian-bullseye-armhf/* var/incoming/
           test ! -d $DPKGDIR/raspbian-bookworm-armhf || mv $DPKGDIR/raspbian-bookworm-armhf/* var/incoming/
+          test ! -d $DPKGDIR/raspbian-trixie-armhf || mv $DPKGDIR/raspbian-trixie-armhf/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-bullseye-arm64 || mv $DPKGDIR/raspberrypi-bullseye-arm64/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-bookworm-arm64 || mv $DPKGDIR/raspberrypi-bookworm-arm64/* var/incoming/
+          test ! -d $DPKGDIR/raspberrypi-trixie-arm64 || mv $DPKGDIR/raspberrypi-trixie-arm64/* var/incoming/
           reprepro processincoming default
 
       - name: Pack and prepare release
@@ -74,6 +76,7 @@ jobs:
           reprepro list buster >> ../../$RELNOTESFILE
           reprepro list bullseye >> ../../$RELNOTESFILE
           reprepro list bookworm >> ../../$RELNOTESFILE
+          reprepro list trixie >> ../../$RELNOTESFILE
           cat ../../$RELNOTESFILE
 
       - name: Create release
