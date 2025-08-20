@@ -2,5 +2,5 @@ PKGNAME=owntone
 OWNER=owntone
 REPOSITORY=owntone-server
 VER=28.12.137.gitb612e12
-DEB=1
+DEB=2
 COMMIT=b612e12acae47d29b03bd912220ee398d9db1b33
