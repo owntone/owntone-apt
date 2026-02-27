@@ -126,9 +126,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring devscripts dh-make
-          wget -O dl/raspbian-archive-keyring.deb http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.2_all.deb
+          wget -O dl/raspbian-archive-keyring.deb http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.4_all.deb
           sudo dpkg -i dl/raspbian-archive-keyring.deb
-          wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2016.10.31_all.deb
+          wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2025.1+rpt1_all.deb
           sudo dpkg -i dl/raspberrypi-archive-keyring.deb
 
       - name: Cache pbuilder image
