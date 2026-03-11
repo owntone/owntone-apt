@@ -62,7 +62,7 @@ jobs:
           test ! -d $DPKGDIR/raspberrypi-bullseye-arm64 || mv $DPKGDIR/raspberrypi-bullseye-arm64/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-bookworm-arm64 || mv $DPKGDIR/raspberrypi-bookworm-arm64/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-trixie-arm64 || mv $DPKGDIR/raspberrypi-trixie-arm64/* var/incoming/
-          test ! -d $DPKGDIR/debian-noble-arm64 || mv $DPKGDIR/debian-noble-arm64/* var/incoming/
+          test ! -d $DPKGDIR/ubuntu-noble-arm64 || mv $DPKGDIR/ubuntu-noble-arm64/* var/incoming/
           reprepro processincoming default
 
       - name: Pack and prepare release
