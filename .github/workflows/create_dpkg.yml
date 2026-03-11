@@ -15,6 +15,8 @@ on:
         type: boolean
       raspberrypi-trixie-arm64:
         type: boolean
+      debian-noble-arm64:
+        type: boolean
       debian-bullseye-amd64:
         type: boolean
       debian-bookworm-amd64:
@@ -37,6 +39,7 @@ env:
   raspberrypi-bullseye-arm64: '{"image":"raspberrypi-bullseye-arm64","OS":"raspberrypi","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-bookworm-arm64: '{"image":"raspberrypi-bookworm-arm64","OS":"raspberrypi","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-trixie-arm64: '{"image":"raspberrypi-trixie-arm64","OS":"raspberrypi","DIST":"trixie","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
+  debian-noble-arm64: '{"image":"debian-noble-arm64","OS":"ubuntu","DIST":"noble","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   debian-bullseye-amd64: '{"image":"debian-bullseye-amd64","OS":"debian","DIST":"bullseye","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-bookworm-amd64: '{"image":"debian-bookworm-amd64","OS":"debian","DIST":"bookworm","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-trixie-amd64: '{"image":"debian-trixie-amd64","OS":"debian","DIST":"trixie","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
@@ -54,6 +57,7 @@ jobs:
       BUILD_raspberrypi-bullseye-arm64: ${{ github.event.inputs.raspberrypi-bullseye-arm64 || 'true' }}
       BUILD_raspberrypi-bookworm-arm64: ${{ github.event.inputs.raspberrypi-bookworm-arm64 || 'true' }}
       BUILD_raspberrypi-trixie-arm64: ${{ github.event.inputs.raspberrypi-trixie-arm64 || 'true' }}
+      BUILD_debian-noble-arm64: ${{ github.event.inputs.debian-noble-arm64 || 'true' }}
       BUILD_debian-bullseye-amd64: ${{ github.event.inputs.debian-bullseye-amd64 || 'true' }}
       BUILD_debian-bookworm-amd64: ${{ github.event.inputs.debian-bookworm-amd64 || 'true' }}
       BUILD_debian-trixie-amd64: ${{ github.event.inputs.debian-trixie-amd64 || 'true' }}
@@ -82,6 +86,10 @@ jobs:
       - name: Add raspberrypi-trixie-arm64
         if: ${{ env.BUILD_raspberrypi-trixie-arm64 == 'true' }}
         run: echo -n '${{ env.raspberrypi-trixie-arm64 }},' >> $PKGCONF
+
+      - name: Add debian-noble-arm64
+        if: ${{ env.BUILD_debian-noble-arm64 == 'true' }}
+        run: echo -n '${{ env.debian-noble-arm64 }},' >> $PKGCONF
 
       - name: Add debian-bullseye-amd64
         if: ${{ env.BUILD_debian-bullseye-amd64 == 'true' }}
@@ -125,7 +133,7 @@ jobs:
       - name: Install pbuilder, Debian tools, keyrings
         run: |
           sudo apt-get update
-          sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring devscripts dh-make
+          sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring ubuntu-keyring devscripts dh-make
           wget -O dl/raspbian-archive-keyring.deb http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.4_all.deb
           sudo dpkg -i dl/raspbian-archive-keyring.deb
           wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2025.1+rpt1_all.deb

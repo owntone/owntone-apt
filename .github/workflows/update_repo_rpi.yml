@@ -62,6 +62,7 @@ jobs:
           test ! -d $DPKGDIR/raspberrypi-bullseye-arm64 || mv $DPKGDIR/raspberrypi-bullseye-arm64/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-bookworm-arm64 || mv $DPKGDIR/raspberrypi-bookworm-arm64/* var/incoming/
           test ! -d $DPKGDIR/raspberrypi-trixie-arm64 || mv $DPKGDIR/raspberrypi-trixie-arm64/* var/incoming/
+          test ! -d $DPKGDIR/debian-noble-arm64 || mv $DPKGDIR/debian-noble-arm64/* var/incoming/
           reprepro processincoming default
 
       - name: Pack and prepare release
@@ -77,6 +78,7 @@ jobs:
           reprepro list bullseye >> ../../$RELNOTESFILE
           reprepro list bookworm >> ../../$RELNOTESFILE
           reprepro list trixie >> ../../$RELNOTESFILE
+          reprepro list noble >> ../../$RELNOTESFILE
           cat ../../$RELNOTESFILE
 
       - name: Create release

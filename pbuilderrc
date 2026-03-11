@@ -8,6 +8,16 @@ if [ "$OS" == "debian" ]; then
     PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
     : ${DIST:="bullseye"}
     : ${ARCH:="amd64"}
+elif [ "$OS" == "ubuntu" ]; then
+    MIRRORSITE="http://archive.ubuntu.com/ubuntu/"
+    COMPONENTS="main restricted universe multiverse"
+    DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg")
+    if [ "$ARCH" == "arm64" ] || [ "$ARCH" == "armhf" ]; then
+        MIRRORSITE="http://ports.ubuntu.com/ubuntu-ports/"
+    fi
+    PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+    : ${DIST:="noble"}
+    : ${ARCH:="amd64"}
 elif [ "$OS" == "raspbian" ]; then
     MIRRORSITE="http://archive.raspbian.org/raspbian/"
     COMPONENTS="main contrib non-free rpi"
