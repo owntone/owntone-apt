@@ -30,5 +30,5 @@ Origin: www.gyfgafguf.dk/raspbian
 Codename: noble
 Architectures: arm64 source
 Components: contrib
-Description: OwnTone repo for Raspberry Pi OS
+Description: OwnTone repo for Ubuntu
 SignWith: E0AD26FB82525DC958B0A1D4F62793319870F4F5

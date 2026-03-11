@@ -44,6 +44,6 @@ Description: Serves your local music library and Spotify library to AirPlay,
  You can control OwnTone with Apple Remote (and DACP compatibles), with an MPD
  client or with the built-in web interface at http://localhost:3689/.
  .
- This package is specifically made for Raspberry Pi OS. OwnTone was previously
+ This package is specifically made for Raspberry Pi OS and Ubuntu. OwnTone was previously
  called forked-daapd.
 
