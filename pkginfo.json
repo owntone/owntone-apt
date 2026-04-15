@@ -3,16 +3,16 @@
     "name":"owntone",
     "owner":"owntone",
     "repository":"owntone-server",
-    "version":"29.0.139.git87eedb8",
+    "version":"29.1.140.git3801bcc",
     "deb":"1",
-    "commit":"87eedb88632804ab5cc56bcf7b0811fbce5ca77e"
+    "commit":"3801bccaf0d30a2cf1e2b405a6afcddf5eb4c110"
   },
   {
     "name":"airptpd",
     "owner":"owntone",
     "repository":"libairptp",
     "version":"0.4",
-    "deb":"2",
-    "commit":"542ab7ba0c537cc6bf3d924dfd19da1f7e4b9cf6"
+    "deb":"3",
+    "commit":"a0fbbfdfffea9513851869269db8a1f448a8c745"
   }
 ]
