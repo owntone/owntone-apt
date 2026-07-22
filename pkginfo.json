@@ -3,9 +3,9 @@
     "name":"owntone",
     "owner":"owntone",
     "repository":"owntone-server",
-    "version":"29.2.141.gitfa607a0",
+    "version":"29.3.142.gitd6fb3ed",
     "deb":"1",
-    "commit":"fa607a02768d9e29cd87065ac30ac66ea673f1ae"
+    "commit":"d6fb3edf5831de38134ebd92fcf09a730ddd37aa"
   },
   {
     "name":"airptpd",
