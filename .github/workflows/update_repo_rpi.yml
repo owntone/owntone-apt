@@ -51,7 +51,7 @@ jobs:
           ls -lR repo/rpi/var
 
       - name: Download packages
-        uses: dawidd6/action-download-artifact@v3
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: create_dpkg.yml
           workflow_conclusion: success
