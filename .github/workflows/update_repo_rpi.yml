@@ -3,8 +3,16 @@ name: Update RPi repository
 on:
   workflow_dispatch:
     inputs:
+      owntone-server:
+        description: Update owntone
+        required: true
+        type: boolean
+      airptpd:
+        description: Update airptpd
+        required: true
+        type: boolean
       release:
-        description: Create release?
+        description: Create release
         required: true
         type: boolean
 
@@ -51,12 +59,23 @@ jobs:
           name: "raspbian|raspberrypi"
           name_is_regexp: true
 
-      - name: Add incoming packages
-        working-directory: repo/rpi
-        env:
-          DPKGDIR: ../../dl/artifacts
+      - name: List artifacts
         run: |
-          find $DPKGDIR -type f -print0 | xargs -0 cp --update=none --target-directory=var/incoming
+          ls -lR dl/artifacts
+
+      - name: Add owntone debs
+        if: ${{ github.event.inputs.owntone-server == 'true' }}
+        run: |
+          find dl/artifacts/owntone* -type f -print0 | xargs -0 cp --update=none --target-directory=repo/rpi/var/incoming
+
+      - name: Add airptpd debs
+        if: ${{ github.event.inputs.airptpd == 'true' }}
+        run: |
+          find dl/artifacts/airptpd* -type f -print0 | xargs -0 cp --update=none --target-directory=repo/rpi/var/incoming
+
+      - name: Process incoming packages
+        working-directory: repo/rpi
+        run: |
           ls -l var/incoming
           reprepro processincoming default
 
