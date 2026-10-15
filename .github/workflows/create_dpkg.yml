@@ -23,6 +23,14 @@ on:
         type: boolean
       debian-forky-amd64:
         type: boolean
+      debian-bullseye-arm64:
+        type: boolean
+      debian-bookworm-arm64:
+        type: boolean
+      debian-trixie-arm64:
+        type: boolean
+      debian-forky-arm64:
+        type: boolean
   schedule:
     # Rebuild once a month. Could be 0 0 1, but Github servers are probably
     # quite busy at that time.
@@ -43,6 +51,10 @@ env:
   debian-bookworm-amd64: '{"image":"debian-bookworm-amd64","OS":"debian","DIST":"bookworm","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-trixie-amd64: '{"image":"debian-trixie-amd64","OS":"debian","DIST":"trixie","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-forky-amd64: '{"image":"debian-forky-amd64","OS":"debian","DIST":"forky","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
+  debian-bullseye-arm64: '{"image":"debian-bullseye-arm64","OS":"debian","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
+  debian-bookworm-arm64: '{"image":"debian-bookworm-arm64","OS":"debian","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
+  debian-trixie-arm64: '{"image":"debian-trixie-arm64","OS":"debian","DIST":"trixie","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
+  debian-forky-arm64: '{"image":"debian-forky-arm64","OS":"debian","DIST":"forky","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
 
 jobs:
   prepare:
@@ -63,6 +75,10 @@ jobs:
       BUILD_debian-bookworm-amd64: ${{ github.event.inputs.debian-bookworm-amd64 || 'true' }}
       BUILD_debian-trixie-amd64: ${{ github.event.inputs.debian-trixie-amd64 || 'true' }}
       BUILD_debian-forky-amd64: ${{ github.event.inputs.debian-forky-amd64 || 'true' }}
+      BUILD_debian-bullseye-arm64: ${{ github.event.inputs.debian-bullseye-arm64 || 'true' }}
+      BUILD_debian-bookworm-arm64: ${{ github.event.inputs.debian-bookworm-arm64 || 'true' }}
+      BUILD_debian-trixie-arm64: ${{ github.event.inputs.debian-trixie-arm64 || 'true' }}
+      BUILD_debian-forky-arm64: ${{ github.event.inputs.debian-forky-arm64 || 'true' }}
 
     steps:
       - uses: actions/checkout@v6
@@ -106,6 +122,22 @@ jobs:
       - name: Add debian-forky-amd64
         if: ${{ env.BUILD_debian-forky-amd64 == 'true' }}
         run: echo -n '${{ env.debian-forky-amd64 }},' >> $BUILDTARGETS
+
+      - name: Add debian-bullseye-arm64
+        if: ${{ env.BUILD_debian-bullseye-arm64 == 'true' }}
+        run: echo -n '${{ env.debian-bullseye-arm64 }},' >> $BUILDTARGETS
+
+      - name: Add debian-bookworm-arm64
+        if: ${{ env.BUILD_debian-bookworm-arm64 == 'true' }}
+        run: echo -n '${{ env.debian-bookworm-arm64 }},' >> $BUILDTARGETS
+
+      - name: Add debian-trixie-arm64
+        if: ${{ env.BUILD_debian-trixie-arm64 == 'true' }}
+        run: echo -n '${{ env.debian-trixie-arm64 }},' >> $BUILDTARGETS
+
+      - name: Add debian-forky-arm64
+        if: ${{ env.BUILD_debian-forky-arm64 == 'true' }}
+        run: echo -n '${{ env.debian-forky-arm64 }},' >> $BUILDTARGETS
 
       - name: Define targets
         id: set-targets
