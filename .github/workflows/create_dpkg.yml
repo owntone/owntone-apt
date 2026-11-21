@@ -188,7 +188,7 @@ jobs:
       - name: Install pbuilder, Debian tools, keyrings
         run: |
           sudo apt-get update
-          sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring devscripts dh-make
+          sudo apt-get install -yq pbuilder qemu-user-binfmt debian-archive-keyring devscripts dh-make
 
       - name: Restore pbuilder image
         id: cache-image
