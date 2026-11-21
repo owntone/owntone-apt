@@ -170,7 +170,7 @@ jobs:
       - name: Install pbuilder, Debian tools, keyrings
         run: |
           sudo apt-get update
-          sudo apt-get install -yq pbuilder qemu-user-static debian-archive-keyring
+          sudo apt-get install -yq pbuilder qemu-user-binfmt debian-archive-keyring
           wget -O dl/raspbian-archive-keyring.deb http://archive.raspbian.org/raspbian/pool/main/r/raspbian-archive-keyring/raspbian-archive-keyring_20120528.4_all.deb
           sudo dpkg -i dl/raspbian-archive-keyring.deb
           wget -O dl/raspberrypi-archive-keyring.deb http://archive.raspberrypi.org/debian/pool/main/r/raspberrypi-archive-keyring/raspberrypi-archive-keyring_2025.1+rpt1_all.deb
