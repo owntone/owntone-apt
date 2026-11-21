@@ -3,27 +3,19 @@ name: Create Debian packages
 on:
   workflow_dispatch:
     inputs:
-      raspbian-bullseye-armhf:
-        type: boolean
       raspbian-bookworm-armhf:
         type: boolean
       raspbian-trixie-armhf:
         type: boolean
-      raspberrypi-bullseye-arm64:
-        type: boolean
       raspberrypi-bookworm-arm64:
         type: boolean
       raspberrypi-trixie-arm64:
-        type: boolean
-      debian-bullseye-amd64:
         type: boolean
       debian-bookworm-amd64:
         type: boolean
       debian-trixie-amd64:
         type: boolean
       debian-forky-amd64:
-        type: boolean
-      debian-bullseye-arm64:
         type: boolean
       debian-bookworm-arm64:
         type: boolean

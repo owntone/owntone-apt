@@ -2,12 +2,10 @@
 set -e
 
 if [ "$OS" == "debian" ]; then
-    MIRRORSITE="http://ftp.debian.org/debian/"
+    MIRRORSITE="http://deb.debian.org/debian/"
     COMPONENTS="main contrib non-free"
     DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
     PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
-    : ${DIST:="bullseye"}
-    : ${ARCH:="amd64"}
 elif [ "$OS" == "raspbian" ]; then
     MIRRORSITE="http://archive.raspbian.org/raspbian/"
     COMPONENTS="main contrib non-free rpi"
@@ -15,17 +13,13 @@ elif [ "$OS" == "raspbian" ]; then
     APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
     DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/raspbian-archive-keyring.gpg")
     PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
-    : ${DIST:="buster"}
-    : ${ARCH:="armhf"}
 elif [ "$OS" == "raspberrypi" ]; then
-    MIRRORSITE="http://ftp.debian.org/debian/"
+    MIRRORSITE="http://deb.debian.org/debian/"
     COMPONENTS="main contrib non-free"
     OTHERMIRROR="deb http://security.debian.org/debian-security $DIST-security main contrib non-free|deb http://archive.raspberrypi.org/debian/ $DIST main"
     APTKEYRINGS=("/usr/share/keyrings/raspberrypi-archive-keyring.gpg")
     DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS[@]}" "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg")
     PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
-    : ${DIST:="bullseye"}
-    : ${ARCH:="armhf"}
 else
     echo "Unknown OS: $OS"
     exit 1
