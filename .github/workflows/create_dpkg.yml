@@ -33,17 +33,13 @@ on:
 # important to support multiline json as per:
 # https://github.community/t/set-output-truncates-multiline-strings/16852
 env:
-  raspbian-bullseye-armhf: '{"image":"raspbian-bullseye-armhf","OS":"raspbian","DIST":"bullseye","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
   raspbian-bookworm-armhf: '{"image":"raspbian-bookworm-armhf","OS":"raspbian","DIST":"bookworm","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
   raspbian-trixie-armhf: '{"image":"raspbian-trixie-armhf","OS":"raspbian","DIST":"trixie","ARCH":"armhf","FLAGS":"-- --binary-arch"}'
-  raspberrypi-bullseye-arm64: '{"image":"raspberrypi-bullseye-arm64","OS":"raspberrypi","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-bookworm-arm64: '{"image":"raspberrypi-bookworm-arm64","OS":"raspberrypi","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   raspberrypi-trixie-arm64: '{"image":"raspberrypi-trixie-arm64","OS":"raspberrypi","DIST":"trixie","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
-  debian-bullseye-amd64: '{"image":"debian-bullseye-amd64","OS":"debian","DIST":"bullseye","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-bookworm-amd64: '{"image":"debian-bookworm-amd64","OS":"debian","DIST":"bookworm","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-trixie-amd64: '{"image":"debian-trixie-amd64","OS":"debian","DIST":"trixie","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
   debian-forky-amd64: '{"image":"debian-forky-amd64","OS":"debian","DIST":"forky","ARCH":"amd64","FLAGS":"-- --binary-arch"}'
-  debian-bullseye-arm64: '{"image":"debian-bullseye-arm64","OS":"debian","DIST":"bullseye","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   debian-bookworm-arm64: '{"image":"debian-bookworm-arm64","OS":"debian","DIST":"bookworm","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   debian-trixie-arm64: '{"image":"debian-trixie-arm64","OS":"debian","DIST":"trixie","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
   debian-forky-arm64: '{"image":"debian-forky-arm64","OS":"debian","DIST":"forky","ARCH":"arm64","FLAGS":"-- --binary-arch"}'
@@ -57,27 +53,19 @@ jobs:
       packages: ${{ steps.set-packages.outputs.packages }}
     env:
       BUILDTARGETS: buildtargets.json
-      BUILD_raspbian-bullseye-armhf: ${{ github.event.inputs.raspbian-bullseye-armhf || 'true' }}
       BUILD_raspbian-bookworm-armhf: ${{ github.event.inputs.raspbian-bookworm-armhf || 'true' }}
       BUILD_raspbian-trixie-armhf: ${{ github.event.inputs.raspbian-trixie-armhf || 'true' }}
-      BUILD_raspberrypi-bullseye-arm64: ${{ github.event.inputs.raspberrypi-bullseye-arm64 || 'true' }}
       BUILD_raspberrypi-bookworm-arm64: ${{ github.event.inputs.raspberrypi-bookworm-arm64 || 'true' }}
       BUILD_raspberrypi-trixie-arm64: ${{ github.event.inputs.raspberrypi-trixie-arm64 || 'true' }}
-      BUILD_debian-bullseye-amd64: ${{ github.event.inputs.debian-bullseye-amd64 || 'true' }}
       BUILD_debian-bookworm-amd64: ${{ github.event.inputs.debian-bookworm-amd64 || 'true' }}
       BUILD_debian-trixie-amd64: ${{ github.event.inputs.debian-trixie-amd64 || 'true' }}
       BUILD_debian-forky-amd64: ${{ github.event.inputs.debian-forky-amd64 || 'true' }}
-      BUILD_debian-bullseye-arm64: ${{ github.event.inputs.debian-bullseye-arm64 || 'true' }}
       BUILD_debian-bookworm-arm64: ${{ github.event.inputs.debian-bookworm-arm64 || 'true' }}
       BUILD_debian-trixie-arm64: ${{ github.event.inputs.debian-trixie-arm64 || 'true' }}
       BUILD_debian-forky-arm64: ${{ github.event.inputs.debian-forky-arm64 || 'true' }}
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Add raspbian-bullseye-armhf
-        if: ${{ env.BUILD_raspbian-bullseye-armhf == 'true' }}
-        run: echo -n '${{ env.raspbian-bullseye-armhf }},' >> $BUILDTARGETS
 
       - name: Add raspbian-bookworm-armhf
         if: ${{ env.BUILD_raspbian-bookworm-armhf == 'true' }}
@@ -87,10 +75,6 @@ jobs:
         if: ${{ env.BUILD_raspbian-trixie-armhf == 'true' }}
         run: echo -n '${{ env.raspbian-trixie-armhf }},' >> $BUILDTARGETS
 
-      - name: Add raspberrypi-bullseye-arm64
-        if: ${{ env.BUILD_raspberrypi-bullseye-arm64 == 'true' }}
-        run: echo -n '${{ env.raspberrypi-bullseye-arm64 }},' >> $BUILDTARGETS
-
       - name: Add raspberrypi-bookworm-arm64
         if: ${{ env.BUILD_raspberrypi-bookworm-arm64 == 'true' }}
         run: echo -n '${{ env.raspberrypi-bookworm-arm64 }},' >> $BUILDTARGETS
@@ -98,10 +82,6 @@ jobs:
       - name: Add raspberrypi-trixie-arm64
         if: ${{ env.BUILD_raspberrypi-trixie-arm64 == 'true' }}
         run: echo -n '${{ env.raspberrypi-trixie-arm64 }},' >> $BUILDTARGETS
-
-      - name: Add debian-bullseye-amd64
-        if: ${{ env.BUILD_debian-bullseye-amd64 == 'true' }}
-        run: echo -n '${{ env.debian-bullseye-amd64 }},' >> $BUILDTARGETS
 
       - name: Add debian-bookworm-amd64
         if: ${{ env.BUILD_debian-bookworm-amd64 == 'true' }}
@@ -114,10 +94,6 @@ jobs:
       - name: Add debian-forky-amd64
         if: ${{ env.BUILD_debian-forky-amd64 == 'true' }}
         run: echo -n '${{ env.debian-forky-amd64 }},' >> $BUILDTARGETS
-
-      - name: Add debian-bullseye-arm64
-        if: ${{ env.BUILD_debian-bullseye-arm64 == 'true' }}
-        run: echo -n '${{ env.debian-bullseye-arm64 }},' >> $BUILDTARGETS
 
       - name: Add debian-bookworm-arm64
         if: ${{ env.BUILD_debian-bookworm-arm64 == 'true' }}
