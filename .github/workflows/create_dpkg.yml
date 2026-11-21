@@ -189,6 +189,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -yq pbuilder qemu-user-binfmt debian-archive-keyring devscripts dh-make
+          sudo cp sudo_env_keep /etc/sudoers.d/
 
       - name: Restore pbuilder image
         id: cache-image
